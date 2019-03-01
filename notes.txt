@@ -1,0 +1,17 @@
+template must have single div with class named same as the page in KEBOB CASE because it's following HTML convention (because it's a "class" in a "div")
+
+router must import the view
+
+App.vue has the <router-view/> that calls the individual view pages
+
+
+$route and $router are two completely seperate things....
+
+$route is describing the fake route to get to a page ./foo/bar/etc
+    the route that got you to the page
+
+    this.$route is vue magic
+
+$router is a vue library that is mimicking going from page to page
+
+.push in vue is like .redirect in rails

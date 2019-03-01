@@ -1,7 +1,12 @@
 <template>
-  <div class="home">
+  <div class="recipes-new">
     <h1>New Recipe</h1>
-    <div>
+    
+    <ul>
+      <li v-for="error in errors">{{ error }}</li>
+    </ul>
+
+    <form v-on:submit.prevent="submit()">
       <div>
         Title: <input v-model="newRecipeTitle">
       </div>
@@ -20,24 +25,13 @@
       <div>
         Image URL: <input v-model="newRecipeImageUrl">
       </div>
-      <button v-on:click="createRecipe()">Create</button>
-    </div>
 
-    <h1>All Recipes</h1>
-   <div v-for="recipe in recipes">
-    <h1>{{ recipe.title }}</h1>
-    <img v-bind:src="recipe.image_url" v-bind:alt="recipe.title">
-    <p>Prep Time: {{ recipe.prep_time }}</p>
-    <p>Ingredients: {{ recipe.ingredients }}</p>
-    <p>Directions: {{ recipe.directions }}</p>
-    </div>
+      <input type="submit" value="Create" class="btn btn-warning">
+    </form>
   </div>
 </template>
 
 <style>
-  img{
-    width: 200px;
-  }
 </style>
 
 <script>
@@ -46,23 +40,18 @@ var axios = require('axios');
 export default {
   data: function() {
     return {
-      recipes: [],
       newRecipeTitle: "",
       newRecipeChef: "",
       newRecipePrepTime: "",
       newRecipeIngredients: "",
       newRecipeDirections: "",
-      newRecipeImageUrl: ""
+      newRecipeImageUrl: "",
+      errors: []
     };
   },
-  created: function() {
-    axios.get("/api/recipes")
-      .then(response => {
-        this.recipes = response.data;
-      });
-  },
+  created: function() {},
   methods: {
-    createRecipe: function() {
+    submit: function() {
       console.log("Create the Recipe...");
       var params = {
                     title: this.newRecipeTitle,
@@ -75,9 +64,14 @@ export default {
       axios.post("/api/recipes", params)
         .then(response => {
           console.log("Success", response.data);
-          this.recipes.push(response.data);
+          this.$router.push("/");
+        }).catch(error => {
+          this.errors = error.response.data.errors;
         });
     }
   }
 };
 </script>
+
+ 
+     
